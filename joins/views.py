@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 
 # Create your views here.
 from joins.forms import JoinForm
@@ -25,6 +25,11 @@ def get_ref_id():
 	except:
 		return ref_id
 
+def share(request):
+	context = {}
+	template = "share.html"
+	return render(request, template, context)
+
 def home(request):
 	form = JoinForm(request.POST or None)
 	if form.is_valid():
@@ -35,6 +40,7 @@ def home(request):
 			new_join_old.ref_id = get_ref_id()
 			new_join_old.ip_address = get_ip(request)
 			new_join_old.save()
+			HttpResponseRedirect("/%s" %new_join_old.ref_if)
 		#new_join.ip_address = get_ip(request)
 		#new_join.save()
 
